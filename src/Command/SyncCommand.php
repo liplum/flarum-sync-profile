@@ -46,9 +46,12 @@ class SyncCommand extends Command
       return;
     }
     $this->debugLog("Starting user profile syncing.");
-    $emails = User::query()->where('email', '<>', '')->get([
+    $userWithEmails = User::query()->where('email', '<>', '')->get([
       "email"
-    ]);
+    ])->toArray();
+    $emails = array_map(function ($a) {
+      return $a->email;
+    }, $userWithEmails);
     $this->debugLog("Will syncing: " . $emails);
     $authorization = $this->getSettings('liplum-sync-profile.authorizationHeader');
     $response =  $this->client->post($syncUsersEndpoint, [
