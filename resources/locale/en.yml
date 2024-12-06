@@ -1,9 +1,9 @@
 liplum-sync-profile:
   admin:
     syncUsersEndpoint:
-      label: Sync All Users Endpoint URL
+      label: Sync Multiple Users Endpoint URL
       help: >
-        A fully qualified URL.
+        A fully qualified URL. Left empty for disable hourly auto-sync.
         The request should return a JSON:API payload that will be used to sync users by email in Flarum.
     syncUserEndpoint:
       label: Sync Single User Endpoint URL
@@ -14,3 +14,7 @@ liplum-sync-profile:
       label: Authorization Header
       help: |
         The Authorization header to send with sync request.
+    webhookToken:
+      label: Webhook Token
+      help: |
+        The token of webhook: /api/sync-profile/webhook/{api} for subscription of user profile changes.

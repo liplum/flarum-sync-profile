@@ -21,4 +21,10 @@ app.initializers.add('liplum-sync-profile', () => {
       help: app.translator.trans('liplum-sync-profile.admin.authorizationHeader.help'),
       type: 'text'
     })
+    .registerSetting({
+      setting: 'liplum-sync-profile.webhookToken',
+      label: app.translator.trans('liplum-sync-profile.admin.webhookToken.label'),
+      help: app.translator.trans('liplum-sync-profile.admin.webhookToken.help'),
+      type: 'text'
+    })
 });
