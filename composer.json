@@ -31,7 +31,7 @@
   },
   "extra": {
     "flarum-extension": {
-      "title": "Sync Profile Core",
+      "title": "Sync Profile",
       "category": "feature",
       "icon": {
         "name": "fas fa-sync",
