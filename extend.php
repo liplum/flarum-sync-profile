@@ -19,7 +19,7 @@ return [
     ->schedule(SyncCommand::class, function (Event $event) {
       $paths = resolve(Paths::class);
 
-      $event->hourly()
+      $event->everyMinute()
         ->withoutOverlapping()
         ->appendOutputTo($paths->storage . '/logs/liplum-sync-profile.log');
     }),

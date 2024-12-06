@@ -45,9 +45,11 @@ class SyncCommand extends Command
     if (!$syncUsersEndpoint) {
       return;
     }
+    $this->debugLog("Starting user profile syncing.");
     $emails = User::query()->where('email', '<>', '')->get([
       "email"
     ]);
+    $this->debugLog("Will syncing: " . $emails);
     $authorization = $this->getSettings('liplum-sync-profile.authorizationHeader');
     $response =  $this->client->post($syncUsersEndpoint, [
       'headers' => [
@@ -64,6 +66,7 @@ class SyncCommand extends Command
     ]);
     $body = json_decode($response->getBody()->getContents());
     $users = $body["data"];
+    $this->debugLog("Sync result: " . $users);
     foreach ($users as $user) {
       $attributes = $user["attributes"];
       $this->addSync($attributes);
