@@ -10,6 +10,7 @@ use Flarum\User\User;
 use GuzzleHttp\Client;
 use Illuminate\Console\Command;
 use Flarum\Foundation\Config;
+use Illuminate\Support\Arr;
 use Psr\Log\LoggerInterface;
 
 class SyncCommand extends Command
@@ -52,26 +53,24 @@ class SyncCommand extends Command
     $emails = array_map(function ($a) {
       return $a["email"];
     }, $userWithEmails);
-    $this->debugLog("Will syncing: " . join(", ", $userWithEmails));
+    $this->debugLog(gettype($emails));
     $this->debugLog("Will syncing: " . join(", ", $emails));
     $authorization = $this->getSettings('liplum-sync-profile.authorizationHeader');
-    $postBody = [
-      "data" => [
-        'type' => 'users',
-        'attributes' => [
-          'emails' => $emails,
-        ],
-      ]
-    ];
-    $this->debugLog("" . $postBody);
     $response =  $this->client->post($syncUsersEndpoint, [
       'headers' => [
         'Authorization' => $authorization,
       ],
-      'json' => $postBody
+      'json' => [
+        "data" => [
+          'type' => 'users',
+          'attributes' => [
+            'emails' => $emails,
+          ],
+        ]
+      ]
     ]);
-    $body = json_decode($response->getBody()->getContents());
-    $users = $body["data"];
+    $body = json_decode($response->getBody()->getContents(), true);
+    $users = Arr::get($body, "data", []);
     $this->debugLog("Sync result: " . $users);
     foreach ($users as $user) {
       $attributes = $user["attributes"];
