@@ -10,9 +10,7 @@
   "license": "MIT",
   "require": {
     "flarum/core": "^1.2",
-    "guzzlehttp/guzzle": "^7.1",
-    "knplabs/github-api": "^3.3",
-    "php-http/guzzle7-adapter": "^0.1"
+    "guzzlehttp/guzzle": "^7.0"
   },
   "authors": [
     {
