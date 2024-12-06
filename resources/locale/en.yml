@@ -1,12 +1,12 @@
 liplum-sync-profile:
   admin:
     syncUsersEndpoint:
-      label: The Sync All Users Endpoint URL
+      label: Sync All Users Endpoint URL
       help: >
         A fully qualified URL.
         The request should return a JSON:API payload that will be used to sync users by email in Flarum.
     syncUserEndpoint:
-      label: The Sync Single User Endpoint URL
+      label: Sync Single User Endpoint URL
       help: >
         A fully qualified URL.
         The request should return a JSON:API payload that will be used to sync a user by email in Flarum.

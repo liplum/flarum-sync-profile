@@ -7,8 +7,6 @@ A [Flarum](http://flarum.org) extension to sync user profile(attributes) when au
 - Bio
 - Masquerade Attributes
 
-Some authentication protocols, such as SAML2, LDAP, OpenID Connect, etc have the ability to send attributes along with an authentication response. This extension provides a framework for syncing user attributes and permissions via that attribute response.
-
 ## Get Started
 
 Installation:

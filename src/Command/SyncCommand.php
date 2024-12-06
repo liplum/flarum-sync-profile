@@ -3,7 +3,6 @@
 namespace Liplum\SyncProfile\Command;
 
 use Liplum\SyncProfile\Event\SyncProfileEvent;
-use Flarum\Extension\ExtensionManager;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Flarum\User\User;
 use GuzzleHttp\Client;
@@ -11,6 +10,7 @@ use Illuminate\Console\Command;
 use Flarum\Foundation\Config;
 use Illuminate\Support\Arr;
 use Psr\Log\LoggerInterface;
+use Flarum\Extension\ExtensionManager;
 use Illuminate\Contracts\Events\Dispatcher;
 
 class SyncCommand extends Command
@@ -47,12 +47,10 @@ class SyncCommand extends Command
     $this->dispatcher = $dispatcher;
   }
 
-  protected function syncMulti()
+  protected function syncAllUsers()
   {
     $syncUsersEndpoint = $this->settings->get('liplum-sync-profile.syncUsersEndpoint');
-    if (!$syncUsersEndpoint) {
-      return;
-    }
+    if (!$syncUsersEndpoint) return;
     $this->debugLog("Starting user profile syncing.");
     $userWithEmails = User::query()->where('email', '<>', '')->get([
       "email"
@@ -60,7 +58,6 @@ class SyncCommand extends Command
     $emails = array_map(function ($a) {
       return $a["email"];
     }, $userWithEmails);
-    $this->debugLog(gettype($emails));
     $this->debugLog("Will syncing: " . join(", ", $emails));
     $authorization = $this->getSettings('liplum-sync-profile.authorizationHeader');
     $response =  $this->client->post($syncUsersEndpoint, [
@@ -96,7 +93,7 @@ class SyncCommand extends Command
     if (!$this->extensions->isEnabled('liplum-sync-profile-core')) {
       return;
     }
-    $this->syncMulti();
+    $this->syncAllUsers();
   }
 
   protected function debugLog(string $message)

@@ -1,6 +1,6 @@
 import app from 'flarum/admin/app';
 
-app.initializers.add('liplum/sync-profile', () => {
+app.initializers.add('liplum-sync-profile', () => {
   app.extensionData
     .for('liplum-sync-profile')
     .registerSetting({

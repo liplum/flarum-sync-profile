@@ -16,7 +16,7 @@ return [
   (new Extend\Console())
     ->command(SyncCommand::class)
     ->schedule(SyncCommand::class, function (Event $event) {
-      $event->everyMinute()
+      $event->hourly()
         ->withoutOverlapping();
     }),
 ];
