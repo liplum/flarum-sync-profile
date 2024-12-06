@@ -102,4 +102,8 @@ class SyncCommand extends Command
       $logger->info($message);
     }
   }
+  private function getSettings(string $key)
+  {
+    return $this->config->offsetGet($key) ?? $this->settings->get($key);
+  }
 }
