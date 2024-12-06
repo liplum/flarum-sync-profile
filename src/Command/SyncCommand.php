@@ -52,20 +52,22 @@ class SyncCommand extends Command
     $emails = array_map(function ($a) {
       return $a->email;
     }, $userWithEmails);
-    $this->debugLog("Will syncing: " . $emails.join(", "));
+    $this->debugLog("Will syncing: " . join(", ", $emails));
     $authorization = $this->getSettings('liplum-sync-profile.authorizationHeader');
+    $postBody = [
+      "data" => [
+        'type' => 'users',
+        'attributes' => [
+          'emails' => $emails,
+        ],
+      ]
+    ];
+    $this->debugLog("" . $postBody);
     $response =  $this->client->post($syncUsersEndpoint, [
       'headers' => [
         'Authorization' => $authorization,
       ],
-      'json' => [
-        "data" => [
-          'type' => 'users',
-          'attributes' => [
-            'emails' => $emails,
-          ],
-        ]
-      ]
+      'json' => $postBody
     ]);
     $body = json_decode($response->getBody()->getContents());
     $users = $body["data"];
