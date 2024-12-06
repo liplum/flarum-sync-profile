@@ -28,3 +28,11 @@ You'll need to start the [Flarum Scheduler](https://docs.flarum.org/scheduler/).
 ```sh
 * * * * * cd /path-to-your-project && php flarum schedule:run >> /dev/null 2>&1
 ```
+
+## Sync
+
+You can run the command to manually trigger sync all users.
+
+```bash
+php flarum liplum:sync-profile:sync-all
+```
