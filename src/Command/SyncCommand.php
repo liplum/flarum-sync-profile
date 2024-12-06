@@ -52,7 +52,7 @@ class SyncCommand extends Command
     $emails = array_map(function ($a) {
       return $a->email;
     }, $userWithEmails);
-    $this->debugLog("Will syncing: " . $emails);
+    $this->debugLog("Will syncing: " . $emails.join(", "));
     $authorization = $this->getSettings('liplum-sync-profile.authorizationHeader');
     $response =  $this->client->post($syncUsersEndpoint, [
       'headers' => [
