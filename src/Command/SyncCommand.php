@@ -50,8 +50,9 @@ class SyncCommand extends Command
       "email"
     ])->toArray();
     $emails = array_map(function ($a) {
-      return $a->email;
+      return $a["email"];
     }, $userWithEmails);
+    $this->debugLog("Will syncing: " . join(", ", $userWithEmails));
     $this->debugLog("Will syncing: " . join(", ", $emails));
     $authorization = $this->getSettings('liplum-sync-profile.authorizationHeader');
     $postBody = [
