@@ -2,7 +2,6 @@
 
 namespace Liplum\SyncProfile\Command;
 
-use Flarum\Bus\Dispatcher;
 use Liplum\SyncProfile\Event\SyncProfileEvent;
 use Flarum\Extension\ExtensionManager;
 use Flarum\Settings\SettingsRepositoryInterface;
@@ -12,6 +11,7 @@ use Illuminate\Console\Command;
 use Flarum\Foundation\Config;
 use Illuminate\Support\Arr;
 use Psr\Log\LoggerInterface;
+use Illuminate\Contracts\Bus\Dispatcher;
 
 class SyncCommand extends Command
 {
@@ -29,14 +29,12 @@ class SyncCommand extends Command
   private $client;
   private $config;
   private $extensions;
-  private $dispatcher;
 
   public function __construct(
     SettingsRepositoryInterface $settings,
     Client $client,
     Config $config,
     ExtensionManager $extensions,
-    Dispatcher $dispatcher,
   ) {
     parent::__construct();
 
@@ -44,7 +42,6 @@ class SyncCommand extends Command
     $this->client = $client;
     $this->config = $config;
     $this->extensions = $extensions;
-    $this->dispatcher = $dispatcher;
   }
 
   protected function syncMulti()
@@ -89,7 +86,11 @@ class SyncCommand extends Command
     $email = $attributes["email"];
     $event = new SyncProfileEvent($email, $attributes);
     $this->debugLog("$email will sync soon.");
-    $this->dispatcher->dispatch($event);
+    /**
+     * @var Dispatcher $bus
+     */
+    $bus = resolve(Dispatcher::class);
+    $bus->dispatch($event);
   }
 
   public function handle()
@@ -104,7 +105,7 @@ class SyncCommand extends Command
   {
     if ($this->config->inDebugMode()) {
       /**
-       * @var $logger LoggerInterface
+       * @var LoggerInterface
        */
       $logger = resolve(LoggerInterface::class);
       $logger->info($message);
