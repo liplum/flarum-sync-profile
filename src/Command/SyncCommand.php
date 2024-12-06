@@ -72,11 +72,13 @@ class SyncCommand extends Command
 
   public function addSync($attributes)
   {
-    $event = new AuthSyncEvent();
-    $event->email = $attributes["email"];
-    $event->attributes = $attributes;
-    $event->time = Carbon::now();
-    $event->save();
+    $this->debugLog($attributes["email"] . "" . $attributes);
+
+    // $event = new AuthSyncEvent();
+    // $event->email = $attributes["email"];
+    // $event->attributes = $attributes;
+    // $event->time = Carbon::now();
+    // $event->save();
   }
 
   public function handle()
