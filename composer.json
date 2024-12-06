@@ -46,5 +46,8 @@
     "allow-plugins": {
       "php-http/discovery": true
     }
+  },
+  "require-dev": {
+    "liplum/flarum-sync-profile-core": "dev-master"
   }
 }

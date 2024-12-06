@@ -1,13 +1,16 @@
 liplum-sync-profile:
   admin:
-    account_types:
-      user: User
-      organization: Organization
-
-    settings:
-      desc: Obtain your API token from <a>https://github.com/settings/tokens/new</a>. This extension requires the <code>user</code> and <code>read:org</code> scopes.
-
-      api_token_label: API Token
-      account_type_label: Account Type
-      login_label: Login
-      group_label: Group to Assign
+    syncUserEndpoint:
+      label: The Sync-User Endpoint URL
+      help: >
+        A fully qualified URL.
+        The request should return a JSON:API payload that will be used to sync a user by email in Flarum.
+    syncUsersEndpoint:
+      label: The Sync-User Endpoint URL
+      help: >
+        A fully qualified URL.
+        The request should return a JSON:API payload that will be used to sync users by email in Flarum.
+    authorizationHeader:
+      label: Authorization Header
+      help: |
+        The Authorization header to send with sync request.
