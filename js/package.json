@@ -1,0 +1,16 @@
+{
+  "name": "@liplum/flarum-sync-profile",
+  "private": true,
+  "version": "0.1",
+  "devDependencies": {
+    "flarum-tsconfig": "^1.0",
+    "flarum-webpack-config": "^2.0",
+    "typescript": "^5.7.2",
+    "webpack": "^5.97.0",
+    "webpack-cli": "^5.1.4"
+  },
+  "scripts": {
+    "dev": "webpack --mode development --watch",
+    "build": "webpack --mode production"
+  }
+}

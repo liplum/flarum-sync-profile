@@ -1,0 +1,50 @@
+{
+  "name": "liplum/flarum-sync-profile",
+  "description": "The user profile synchronization when authenticated by an external identity provider.",
+  "keywords": [
+    "flarum",
+    "flarum-extension",
+    "flarum-ext"
+  ],
+  "type": "flarum-extension",
+  "license": "MIT",
+  "require": {
+    "flarum/core": "^1.2",
+    "guzzlehttp/guzzle": "^7.1",
+    "knplabs/github-api": "^3.3",
+    "php-http/guzzle7-adapter": "^0.1"
+  },
+  "authors": [
+    {
+      "name": "Liplum",
+      "homepage": "https://liplum.net/",
+      "email": "Li_plum@outlook.com",
+      "role": "Developer"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/liplum/sync-profile/issues",
+    "source": "https://github.com/liplum/sync-profile"
+  },
+  "autoload": {
+    "psr-4": {
+      "Liplum\\SyncProfile\\": "src/"
+    }
+  },
+  "extra": {
+    "flarum-extension": {
+      "title": "Sync Profile Core",
+      "category": "feature",
+      "icon": {
+        "name": "fas fa-sync",
+        "backgroundColor": "#b4333f",
+        "color": "#fff"
+      }
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "php-http/discovery": true
+    }
+  }
+}
