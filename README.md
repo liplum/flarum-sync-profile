@@ -34,5 +34,5 @@ You'll need to start the [Flarum Scheduler](https://docs.flarum.org/scheduler/).
 You can run the command to manually trigger sync all users.
 
 ```bash
-php flarum liplum:sync-profile:sync-all
+php flarum liplum:sync-profile:all
 ```
