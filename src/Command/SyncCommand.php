@@ -2,8 +2,8 @@
 
 namespace Liplum\SyncProfile\Command;
 
-use Carbon\Carbon;
-use Liplum\SyncProfile\Models\AuthSyncEvent;
+use Flarum\Bus\Dispatcher;
+use Liplum\SyncProfile\Event\SyncProfileEvent;
 use Flarum\Extension\ExtensionManager;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Flarum\User\User;
@@ -29,15 +29,22 @@ class SyncCommand extends Command
   private $client;
   private $config;
   private $extensions;
+  private $dispatcher;
 
-  public function __construct(SettingsRepositoryInterface $settings, Client $client, Config $config, ExtensionManager $extensions)
-  {
+  public function __construct(
+    SettingsRepositoryInterface $settings,
+    Client $client,
+    Config $config,
+    ExtensionManager $extensions,
+    Dispatcher $dispatcher,
+  ) {
     parent::__construct();
 
     $this->settings = $settings;
     $this->client = $client;
     $this->config = $config;
     $this->extensions = $extensions;
+    $this->dispatcher = $dispatcher;
   }
 
   protected function syncMulti()
@@ -71,7 +78,6 @@ class SyncCommand extends Command
     ]);
     $body = json_decode($response->getBody()->getContents(), true);
     $users = Arr::get($body, "data", []);
-    $this->debugLog("Sync result: " . $users);
     foreach ($users as $user) {
       $attributes = $user["attributes"];
       $this->addSync($attributes);
@@ -80,13 +86,10 @@ class SyncCommand extends Command
 
   public function addSync($attributes)
   {
-    $this->debugLog($attributes["email"] . "" . $attributes);
-
-    // $event = new AuthSyncEvent();
-    // $event->email = $attributes["email"];
-    // $event->attributes = $attributes;
-    // $event->time = Carbon::now();
-    // $event->save();
+    $email = $attributes["email"];
+    $event = new SyncProfileEvent($email, $attributes);
+    $this->debugLog("$email will sync soon.");
+    $this->dispatcher->dispatch($event);
   }
 
   public function handle()
