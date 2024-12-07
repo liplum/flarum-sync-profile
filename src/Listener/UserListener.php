@@ -38,7 +38,7 @@ class UserListener
     $events->listen(Registered::class, [$this, 'handleRegistered']);
   }
 
-  public function handleDeleted(Registered $event)
+  public function handleRegistered(Registered $event)
   {
     if (!$this->extensions->isEnabled('liplum-sync-profile-core')) return;
     $email = $event->user->email;
