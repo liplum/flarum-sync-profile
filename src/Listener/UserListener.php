@@ -8,8 +8,9 @@ use GuzzleHttp\Client;
 use Illuminate\Contracts\Events\Dispatcher;
 use Flarum\Foundation\Config;
 use Flarum\Extension\ExtensionManager;
+use Illuminate\Support\Arr;
+use Liplum\SyncProfile\Event\SyncProfileEvent;
 use Psr\Log\LoggerInterface;
-use Liplum\SyncProfile\SyncUtils;
 
 class UserListener
 {
@@ -46,13 +47,41 @@ class UserListener
     if (!$syncUserEndpoint) return;
     $authorization = $this->getSettings('liplum-sync-profile.authorizationHeader');
     $this->debugLog("Starting user profile syncing.");
-    SyncUtils::syncUser(
+    static::syncUser(
       email: $email,
       syncUserEndpoint: $syncUserEndpoint,
       dispatcher: $this->dispatcher,
       authorization: $authorization,
       client: $this->client,
     );
+  }
+
+  public static  function syncUser(
+    string $email,
+    Dispatcher $dispatcher,
+    string $syncUserEndpoint,
+    string $authorization,
+    Client $client,
+  ) {
+    $response =  $client->post($syncUserEndpoint, [
+      'headers' => [
+        'Authorization' => $authorization,
+      ],
+      'json' => [
+        "data" => [
+          'type' => 'users',
+          'attributes' => [
+            'email' => $email,
+          ],
+        ]
+      ]
+    ]);
+    $body = json_decode($response->getBody()->getContents(), true);
+    $user = Arr::get($body, "data", []);
+    $attributes = $user["attributes"];
+    $email = $attributes["email"];
+    $event = new SyncProfileEvent($email, $attributes);
+    $dispatcher->dispatch($event);
   }
 
   protected function debugLog(string $message)

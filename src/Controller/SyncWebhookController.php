@@ -11,9 +11,9 @@ use Flarum\Foundation\Config;
 use Flarum\Settings\SettingsRepositoryInterface;
 use GuzzleHttp\Client;
 use Illuminate\Contracts\Events\Dispatcher;
+use Liplum\SyncProfile\Event\SyncProfileEvent;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
-use Liplum\SyncProfile\SyncUtils;
 
 class SyncWebhookController implements RequestHandlerInterface
 {
@@ -80,7 +80,8 @@ class SyncWebhookController implements RequestHandlerInterface
   {
     $email = $body['data']['email'];
     $attributes = $body['data']['attributes'];
-    SyncUtils::addSync($this->dispatcher, $email, $attributes);
+    $event = new SyncProfileEvent($email, $attributes);
+    $this->dispatcher->dispatch($event);
     $this->debugLog("Synced $email from webhook");
     return new Response(200);
   }

@@ -8,8 +8,10 @@ use Illuminate\Console\Command;
 use Flarum\Foundation\Config;
 use Psr\Log\LoggerInterface;
 use Flarum\Extension\ExtensionManager;
+use Flarum\User\User;
 use Illuminate\Contracts\Events\Dispatcher;
-use Liplum\SyncProfile\SyncUtils;
+use Illuminate\Support\Arr;
+use Liplum\SyncProfile\Event\SyncProfileEvent;
 
 class SyncProfileCommand extends Command
 {
@@ -52,12 +54,47 @@ class SyncProfileCommand extends Command
     if (!$syncUsersEndpoint) return;
     $authorization = $this->getSettings('liplum-sync-profile.authorizationHeader');
     $this->debugLog("Starting user profile syncing.");
-    SyncUtils::syncAllUsers(
+    static::syncAllUsers(
       syncUsersEndpoint: $syncUsersEndpoint,
       dispatcher: $this->dispatcher,
       authorization: $authorization,
       client: $this->client,
     );
+  }
+
+  public static function syncAllUsers(
+    Dispatcher $dispatcher,
+    string $syncUsersEndpoint,
+    string $authorization,
+    Client $client,
+  ) {
+    $userWithEmails = User::query()->where('email', '<>', '')->get([
+      "email"
+    ])->toArray();
+    $emails = array_map(function ($a) {
+      return $a["email"];
+    }, $userWithEmails);
+    $response =  $client->post($syncUsersEndpoint, [
+      'headers' => [
+        'Authorization' => $authorization,
+      ],
+      'json' => [
+        "data" => [
+          'type' => 'users',
+          'attributes' => [
+            'emails' => $emails,
+          ],
+        ]
+      ]
+    ]);
+    $body = json_decode($response->getBody()->getContents(), true);
+    $users = Arr::get($body, "data", []);
+    foreach ($users as $user) {
+      $attributes = $user["attributes"];
+      $email = $attributes["email"];
+      $event = new SyncProfileEvent($email, $attributes);
+      $dispatcher->dispatch($event);
+    }
   }
 
   protected function debugLog(string $message)
