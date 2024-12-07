@@ -23,7 +23,11 @@ return [
     }),
 
   (new Extend\Routes('api'))
-    ->post('/sync-profile/webhook/{token}', 'liplum-sync-profile.sync-webhook', SyncWebhookController::class),
+    ->post(
+      '/sync-profile/webhook/{token}',
+      'liplum-sync-profile.sync-webhook',
+      SyncWebhookController::class
+    ),
 
   (new Extend\Event)
     ->subscribe(UserListener::class),

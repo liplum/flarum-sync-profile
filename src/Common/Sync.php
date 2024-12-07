@@ -1,5 +1,7 @@
 <?php
 
+namespace Liplum\SyncProfile\Common;
+
 use Flarum\User\User;
 use GuzzleHttp\Client;
 use Liplum\SyncProfile\Event\SyncProfileEvent;

@@ -13,6 +13,8 @@ use GuzzleHttp\Client;
 use Illuminate\Contracts\Events\Dispatcher;
 use Psr\Log\LoggerInterface;
 
+use function Liplum\SyncProfile\Common\addSync;
+
 class SyncWebhookController extends RequestHandlerInterface
 {
 

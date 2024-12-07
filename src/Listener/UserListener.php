@@ -10,6 +10,8 @@ use Flarum\Foundation\Config;
 use Flarum\Extension\ExtensionManager;
 use Psr\Log\LoggerInterface;
 
+use function Liplum\SyncProfile\Common\syncUser;
+
 class UserListener
 {
   private $settings;

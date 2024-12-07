@@ -10,6 +10,8 @@ use Psr\Log\LoggerInterface;
 use Flarum\Extension\ExtensionManager;
 use Illuminate\Contracts\Events\Dispatcher;
 
+use function Liplum\SyncProfile\Common\syncAllUsers;
+
 class SyncProfileCommand extends Command
 {
   /**
