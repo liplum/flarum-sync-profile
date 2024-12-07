@@ -17,4 +17,4 @@ liplum-sync-profile:
     webhookToken:
       label: Webhook Token
       help: |
-        The token of webhook: /api/sync-profile/webhook/{api} for subscription of user profile changes.
+        The token of webhook: "/api/sync-profile/webhook/<api>" for subscription of user profile changes.
