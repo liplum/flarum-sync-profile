@@ -11,11 +11,12 @@ use Flarum\Foundation\Config;
 use Flarum\Settings\SettingsRepositoryInterface;
 use GuzzleHttp\Client;
 use Illuminate\Contracts\Events\Dispatcher;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 
 use function Liplum\SyncProfile\Common\addSync;
 
-class SyncWebhookController extends RequestHandlerInterface
+class SyncWebhookController implements RequestHandlerInterface
 {
 
   private $settings;
@@ -31,8 +32,6 @@ class SyncWebhookController extends RequestHandlerInterface
     ExtensionManager $extensions,
     Dispatcher $dispatcher,
   ) {
-    parent::__construct();
-
     $this->settings = $settings;
     $this->client = $client;
     $this->config = $config;
@@ -40,7 +39,7 @@ class SyncWebhookController extends RequestHandlerInterface
     $this->dispatcher = $dispatcher;
   }
 
-  public function handle(ServerRequestInterface $request)
+  public function handle(ServerRequestInterface $request): ResponseInterface
   {
     $webhookToken = $this->getSettings("liplum-sync-profile.webhookToken");
     if (!$webhookToken) {
@@ -53,9 +52,8 @@ class SyncWebhookController extends RequestHandlerInterface
       // Unauthorized
       return new Response(401);
     }
-
     $body = json_decode($request->getBody()->getContents(), true);
-
+    
     $event = $body['event'];
 
     switch ($event) {
