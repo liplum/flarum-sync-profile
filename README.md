@@ -153,6 +153,20 @@ The webhook endpoint is `/api/sync-profile/webhook/{api}`.
 
 A full qualified URL is `https://fourm.example.com/api/sync-profile/webhook/{api}`.
 
+```json
+{
+  "event": "profile-changed",
+  "data": {
+    "email": "email@example.com",
+    "attributes": {
+      "nickname": "Test User",
+      "avatarUrl": "https://example.com/avatarUrl",
+      "bio": "My bio.",
+    }
+  }
+}
+```
+
 Taking the [express.js](https://expressjs.com/) backend server as an example, you can set up the following routes.
 
 ```ts

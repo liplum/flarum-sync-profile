@@ -40,19 +40,19 @@ class SyncWebhookController extends RequestHandlerInterface
 
   public function handle(ServerRequestInterface $request)
   {
-    $token = Arr::get($request->getQueryParams(), 'token');
-    $body = json_decode($request->getBody()->getContents(), true);
-
-    // Validate the token
     $webhookToken = $this->getSettings("liplum-sync-profile.webhookToken");
     if (!$webhookToken) {
       // Bad Request
       return new Response(503);
     }
+    $token = Arr::get($request->getQueryParams(), 'token');
+    // Validate the token
     if (!$token === $webhookToken) {
       // Unauthorized
       return new Response(401);
     }
+
+    $body = json_decode($request->getBody()->getContents(), true);
 
     $event = $body['event'];
 
