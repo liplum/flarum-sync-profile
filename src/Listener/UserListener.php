@@ -19,18 +19,22 @@ class UserListener
   private $config;
   private $extensions;
   private $dispatcher;
+  private $log;
+
   public function __construct(
     SettingsRepositoryInterface $settings,
     Client $client,
     Config $config,
     ExtensionManager $extensions,
     Dispatcher $dispatcher,
+    LoggerInterface $log,
   ) {
     $this->settings = $settings;
     $this->client = $client;
     $this->config = $config;
     $this->extensions = $extensions;
     $this->dispatcher = $dispatcher;
+    $this->log = $log;
   }
 
   public function subscribe(Dispatcher  $events)
@@ -46,7 +50,7 @@ class UserListener
     $syncUserEndpoint = $this->settings->get('liplum-sync-profile.syncUserEndpoint');
     if (!$syncUserEndpoint) return;
     $authorization = $this->getSettings('liplum-sync-profile.authorizationHeader');
-    $this->debugLog("Starting user profile syncing.");
+    $this->log->debug("Starting user profile syncing.");
     static::syncUser(
       email: $email,
       syncUserEndpoint: $syncUserEndpoint,
@@ -82,14 +86,6 @@ class UserListener
     $email = $attributes["email"];
     $event = new SyncProfileEvent($email, $attributes);
     $dispatcher->dispatch($event);
-  }
-
-  protected function debugLog(string $message)
-  {
-    if ($this->config->inDebugMode()) {
-      $logger = resolve(LoggerInterface::class);
-      $logger->info($message);
-    }
   }
 
   private function getSettings(string $key)

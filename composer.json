@@ -1,6 +1,7 @@
 {
   "name": "liplum/flarum-sync-profile",
   "description": "The user profile synchronization when authenticated by an external identity provider.",
+  "version": "0.2",
   "keywords": [
     "flarum",
     "flarum-extension",

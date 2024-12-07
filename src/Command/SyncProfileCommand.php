@@ -30,6 +30,7 @@ class SyncProfileCommand extends Command
   private $config;
   private $extensions;
   private $dispatcher;
+  private $log;
 
   public function __construct(
     SettingsRepositoryInterface $settings,
@@ -37,6 +38,7 @@ class SyncProfileCommand extends Command
     Config $config,
     ExtensionManager $extensions,
     Dispatcher $dispatcher,
+    LoggerInterface $log,
   ) {
     parent::__construct();
 
@@ -45,6 +47,7 @@ class SyncProfileCommand extends Command
     $this->config = $config;
     $this->extensions = $extensions;
     $this->dispatcher = $dispatcher;
+    $this->log = $log;
   }
 
   public function handle()
@@ -53,7 +56,7 @@ class SyncProfileCommand extends Command
     $syncUsersEndpoint = $this->settings->get('liplum-sync-profile.syncUsersEndpoint');
     if (!$syncUsersEndpoint) return;
     $authorization = $this->getSettings('liplum-sync-profile.authorizationHeader');
-    $this->debugLog("Starting user profile syncing.");
+    $this->log->debug("Starting user profile syncing.");
     static::syncAllUsers(
       syncUsersEndpoint: $syncUsersEndpoint,
       dispatcher: $this->dispatcher,
@@ -94,14 +97,6 @@ class SyncProfileCommand extends Command
       $email = $attributes["email"];
       $event = new SyncProfileEvent($email, $attributes);
       $dispatcher->dispatch($event);
-    }
-  }
-
-  protected function debugLog(string $message)
-  {
-    if ($this->config->inDebugMode()) {
-      $logger = resolve(LoggerInterface::class);
-      $logger->info($message);
     }
   }
 

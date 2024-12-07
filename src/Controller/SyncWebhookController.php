@@ -23,6 +23,7 @@ class SyncWebhookController implements RequestHandlerInterface
   private $config;
   private $extensions;
   private $dispatcher;
+  private $log;
 
   public function __construct(
     SettingsRepositoryInterface $settings,
@@ -30,12 +31,14 @@ class SyncWebhookController implements RequestHandlerInterface
     Config $config,
     ExtensionManager $extensions,
     Dispatcher $dispatcher,
+    LoggerInterface $log,
   ) {
     $this->settings = $settings;
     $this->client = $client;
     $this->config = $config;
     $this->extensions = $extensions;
     $this->dispatcher = $dispatcher;
+    $this->log = $log;
   }
 
   public function handle(ServerRequestInterface $request): ResponseInterface
@@ -68,21 +71,13 @@ class SyncWebhookController implements RequestHandlerInterface
     return $this->config->offsetGet($key) ?? $this->settings->get($key);
   }
 
-  protected function debugLog(string $message)
-  {
-    if ($this->config->inDebugMode()) {
-      $logger = resolve(LoggerInterface::class);
-      $logger->info($message);
-    }
-  }
-
   private function handleProfileChanged($body)
   {
     $email = $body['data']['email'];
     $attributes = $body['data']['attributes'];
     $event = new SyncProfileEvent($email, $attributes);
     $this->dispatcher->dispatch($event);
-    $this->debugLog("Synced $email from webhook");
+    $this->log->debug("Synced $email from webhook");
     return new Response(200);
   }
 }
