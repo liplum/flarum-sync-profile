@@ -168,15 +168,15 @@ A full qualified URL is `https://fourm.example.com/api/sync-profile/webhook/{api
 
 ```json
 {
-  "event": "profile-changed",
-  "data": {
-    "email": "email@example.com",
-    "attributes": {
-      "nickname": "Test User",
-      "avatarUrl": "https://example.com/avatarUrl",
-      "bio": "My bio.",
-    }
-  }
+ "event": "profile-changed",
+ "data": {
+  "email": "email@example.com",
+  "attributes": {
+   "nickname": "Test User",
+   "avatarUrl": "https://example.com/avatarUrl",
+   "bio": "My bio."
+  }
+ }
 }
 ```
 
