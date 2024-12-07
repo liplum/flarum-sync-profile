@@ -56,7 +56,7 @@ class UserListener
     );
   }
 
-  public static  function syncUser(
+  public static function syncUser(
     string $email,
     Dispatcher $dispatcher,
     string $syncUserEndpoint,

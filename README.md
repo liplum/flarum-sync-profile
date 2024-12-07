@@ -42,6 +42,19 @@ If the sync-user-endpoint is set, each user profile will be synced when they wer
 The payload of the hook request is in [JSON:API](https://jsonapi.org/) which Flarum uses,
 and the authentication can be checked via the `Authorization` header.
 
+For security issue, you should set the Authorization header in the [config.php](https://docs.flarum.org/config/)
+instead of barely display on extension settings page for anyone who has the extension management permission.
+
+```php
+<?php return array (
+  'debug' => false,
+  // other configurations...
+  "liplum-sync-profile" => array(
+    "authorizationHeader" => "Bearer your_access_token"
+  ),
+);
+```
+
 Here is something like the Flarum backend would request the hook.
 
 For single user:
