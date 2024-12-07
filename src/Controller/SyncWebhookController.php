@@ -11,6 +11,7 @@ use Flarum\Foundation\Config;
 use Flarum\Settings\SettingsRepositoryInterface;
 use GuzzleHttp\Client;
 use Illuminate\Contracts\Events\Dispatcher;
+use Psr\Log\LoggerInterface;
 
 class SyncWebhookController extends RequestHandlerInterface
 {
@@ -68,11 +69,20 @@ class SyncWebhookController extends RequestHandlerInterface
     return $this->config->offsetGet($key) ?? $this->settings->get($key);
   }
 
+  protected function debugLog(string $message)
+  {
+    if ($this->config->inDebugMode()) {
+      $logger = resolve(LoggerInterface::class);
+      $logger->info($message);
+    }
+  }
+
   private function handleProfileChanged($body)
   {
     $email = $body['data']['email'];
     $attributes = $body['data']['attributes'];
     addSync($this->dispatcher, $email, $attributes);
+    $this->debugLog("Synced $email from webhook");
     return new Response(200);
   }
 }
