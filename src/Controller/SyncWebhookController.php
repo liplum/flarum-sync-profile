@@ -13,8 +13,7 @@ use GuzzleHttp\Client;
 use Illuminate\Contracts\Events\Dispatcher;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
-
-use function Liplum\SyncProfile\Common\addSync;
+use Liplum\SyncProfile\SyncUtils;
 
 class SyncWebhookController implements RequestHandlerInterface
 {
@@ -52,8 +51,8 @@ class SyncWebhookController implements RequestHandlerInterface
       // Unauthorized
       return new Response(401);
     }
-    $body = json_decode($request->getBody()->getContents(), true);
-    
+    $body = $request->getParsedBody();
+
     $event = $body['event'];
 
     switch ($event) {
@@ -81,7 +80,7 @@ class SyncWebhookController implements RequestHandlerInterface
   {
     $email = $body['data']['email'];
     $attributes = $body['data']['attributes'];
-    addSync($this->dispatcher, $email, $attributes);
+    SyncUtils::addSync($this->dispatcher, $email, $attributes);
     $this->debugLog("Synced $email from webhook");
     return new Response(200);
   }

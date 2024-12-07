@@ -9,8 +9,7 @@ use Illuminate\Contracts\Events\Dispatcher;
 use Flarum\Foundation\Config;
 use Flarum\Extension\ExtensionManager;
 use Psr\Log\LoggerInterface;
-
-use function Liplum\SyncProfile\Common\syncUser;
+use Liplum\SyncProfile\SyncUtils;
 
 class UserListener
 {
@@ -47,7 +46,7 @@ class UserListener
     if (!$syncUserEndpoint) return;
     $authorization = $this->getSettings('liplum-sync-profile.authorizationHeader');
     $this->debugLog("Starting user profile syncing.");
-    syncUser(
+    SyncUtils::syncUser(
       email: $email,
       syncUserEndpoint: $syncUserEndpoint,
       dispatcher: $this->dispatcher,

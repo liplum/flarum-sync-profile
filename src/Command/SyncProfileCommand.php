@@ -9,8 +9,7 @@ use Flarum\Foundation\Config;
 use Psr\Log\LoggerInterface;
 use Flarum\Extension\ExtensionManager;
 use Illuminate\Contracts\Events\Dispatcher;
-
-use function Liplum\SyncProfile\Common\syncAllUsers;
+use Liplum\SyncProfile\SyncUtils;
 
 class SyncProfileCommand extends Command
 {
@@ -53,7 +52,7 @@ class SyncProfileCommand extends Command
     if (!$syncUsersEndpoint) return;
     $authorization = $this->getSettings('liplum-sync-profile.authorizationHeader');
     $this->debugLog("Starting user profile syncing.");
-    syncAllUsers(
+    SyncUtils::syncAllUsers(
       syncUsersEndpoint: $syncUsersEndpoint,
       dispatcher: $this->dispatcher,
       authorization: $authorization,
