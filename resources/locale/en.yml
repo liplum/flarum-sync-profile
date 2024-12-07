@@ -14,6 +14,14 @@ liplum-sync-profile:
       label: Authorization Header
       help: |
         The Authorization header to send with sync request.
+
+        For security issue, you should set this in your "config.php" like below:
+
+        <code>
+        "liplum-sync-profile" => array(
+            "authorizationHeader" => "access_token_secret"
+        )
+        </code>
     webhookToken:
       label: Webhook Token
       help: |
