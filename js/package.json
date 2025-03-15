@@ -2,6 +2,7 @@
   "name": "@liplum/flarum-sync-profile",
   "private": true,
   "version": "0.2",
+  "type": "module",
   "devDependencies": {
     "flarum-tsconfig": "^1.0",
     "flarum-webpack-config": "^2.0",
