@@ -66,9 +66,9 @@ class SyncWebhookController implements RequestHandlerInterface
     }
   }
 
-  private function getSettings(string $key)
+  private function getSettings(string $key, $default = null)
   {
-    return $this->config->offsetGet($key) ?? $this->settings->get($key);
+    return $this->config->offsetGet($key) ?? $this->settings->get($key, $default);
   }
 
   private function handleProfileChanged($body)
