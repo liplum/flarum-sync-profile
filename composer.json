@@ -22,8 +22,8 @@
     }
   ],
   "support": {
-    "issues": "https://github.com/liplum/sync-profile/issues",
-    "source": "https://github.com/liplum/sync-profile"
+    "issues": "https://github.com/liplum/flarum-sync-profile/issues",
+    "source": "https://github.com/liplum/flarum-sync-profile"
   },
   "autoload": {
     "psr-4": {
