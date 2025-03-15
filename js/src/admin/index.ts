@@ -1,30 +1,31 @@
 import app from 'flarum/admin/app';
+import { extName } from '../r';
 
-app.initializers.add('liplum-sync-profile', () => {
+app.initializers.add(extName, () => {
   app.extensionData
-    .for('liplum-sync-profile')
+    .for(extName)
     .registerSetting({
-      setting: 'liplum-sync-profile.syncUsersEndpoint',
-      label: app.translator.trans('liplum-sync-profile.admin.syncUsersEndpoint.label'),
-      help: app.translator.trans('liplum-sync-profile.admin.syncUsersEndpoint.help'),
-      type: 'text'
+      setting: `${extName}.syncUsersEndpoint`,
+      label: app.translator.trans(`${extName}.admin.syncUsersEndpoint.label`),
+      help: app.translator.trans(`${extName}.admin.syncUsersEndpoint.help`),
+      type: `text`
     })
     .registerSetting({
-      setting: 'liplum-sync-profile.syncUserEndpoint',
-      label: app.translator.trans('liplum-sync-profile.admin.syncUserEndpoint.label'),
-      help: app.translator.trans('liplum-sync-profile.admin.syncUserEndpoint.help'),
-      type: 'text'
+      setting: `${extName}.syncUserEndpoint`,
+      label: app.translator.trans(`${extName}.admin.syncUserEndpoint.label`),
+      help: app.translator.trans(`${extName}.admin.syncUserEndpoint.help`),
+      type: `text`
     })
     .registerSetting({
-      setting: 'liplum-sync-profile.authorizationHeader',
-      label: app.translator.trans('liplum-sync-profile.admin.authorizationHeader.label'),
-      help: app.translator.trans('liplum-sync-profile.admin.authorizationHeader.help'),
-      type: 'text'
+      setting: `${extName}.authorizationHeader`,
+      label: app.translator.trans(`${extName}.admin.authorizationHeader.label`),
+      help: app.translator.trans(`${extName}.admin.authorizationHeader.help`),
+      type: `text`
     })
     .registerSetting({
-      setting: 'liplum-sync-profile.webhookToken',
-      label: app.translator.trans('liplum-sync-profile.admin.webhookToken.label'),
-      help: app.translator.trans('liplum-sync-profile.admin.webhookToken.help'),
-      type: 'text'
+      setting: `${extName}.webhookToken`,
+      label: app.translator.trans(`${extName}.admin.webhookToken.label`),
+      help: app.translator.trans(`${extName}.admin.webhookToken.help`),
+      type: `text`
     })
 });
